@@ -28,26 +28,31 @@ function Login() {
 
     try {
 
-      const response = await API.post(
-        "/auth/login",
-        formData
-      );
+  const response = await API.post(
+    "/auth/login",
+    formData
+  );
 
-      localStorage.setItem(
-        "token",
-        response.data.token
-      );
+  localStorage.setItem(
+    "token",
+    response.data.token
+  );
 
-      toast.success("Login Successful");
+  toast.success("Login Successful");
 
-      navigate("/dashboard");
+  navigate("/dashboard");
 
-    } catch (error) {
+} catch (error) {
 
-      toast.error(
-        error.response?.data?.message ||
-        "Login Failed"
-      );
+  console.log("FULL ERROR:", error);
+
+  alert(
+    "Message: " + error.message +
+    "\nStatus: " + (error.response?.status || "No Status") +
+    "\nServer: " + (error.response?.data?.message || "No Server Message")
+  );
+
+}
 
     }
   };
@@ -57,7 +62,7 @@ function Login() {
 
       <div className="auth-card">
 
-        <h1>URL Shortener</h1>
+        <h1>URL Shortener DEBUG</h1>
 
         <p className="subtitle">
           Login to manage your links
