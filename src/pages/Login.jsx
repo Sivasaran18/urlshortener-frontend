@@ -42,14 +42,20 @@ function Login() {
 
     } catch (error) {
 
-      alert(
-        "Message: " + error.message +
-        "\nStatus: " + (error.response?.status || "No Status") +
-        "\nServer: " +
-        (error.response?.data?.message || "No Server Message")
-      );
+  alert(
+    JSON.stringify(
+      {
+        message: error.message,
+        code: error.code,
+        status: error.response?.status,
+        data: error.response?.data
+      },
+      null,
+      2
+    )
+  );
 
-    }
+}
   };
 
   return (
