@@ -14,12 +14,10 @@ function Login() {
   });
 
   const handleChange = (e) => {
-
     setFormData({
       ...formData,
       [e.target.name]: e.target.value
     });
-
   };
 
   const handleSubmit = async (e) => {
@@ -28,31 +26,28 @@ function Login() {
 
     try {
 
-  const response = await API.post(
-    "/auth/login",
-    formData
-  );
+      const response = await API.post(
+        "/auth/login",
+        formData
+      );
 
-  localStorage.setItem(
-    "token",
-    response.data.token
-  );
+      localStorage.setItem(
+        "token",
+        response.data.token
+      );
 
-  toast.success("Login Successful");
+      toast.success("Login Successful");
 
-  navigate("/dashboard");
+      navigate("/dashboard");
 
-} catch (error) {
+    } catch (error) {
 
-  console.log("FULL ERROR:", error);
-
-  alert(
-    "Message: " + error.message +
-    "\nStatus: " + (error.response?.status || "No Status") +
-    "\nServer: " + (error.response?.data?.message || "No Server Message")
-  );
-
-}
+      alert(
+        "Message: " + error.message +
+        "\nStatus: " + (error.response?.status || "No Status") +
+        "\nServer: " +
+        (error.response?.data?.message || "No Server Message")
+      );
 
     }
   };
