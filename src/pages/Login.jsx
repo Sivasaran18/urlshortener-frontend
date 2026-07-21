@@ -1,6 +1,5 @@
 import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
-import API from "../services/api";
 import "./Auth.css";
 import toast from "react-hot-toast";
 
@@ -26,36 +25,44 @@ function Login() {
 
     try {
 
-      const response = await API.post(
-        "/auth/login",
-        formData
+      const response = await fetch(
+        "https://urlshortener-backend-op87.onrender.com/api/auth/login",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify(formData)
+        }
       );
 
-      localStorage.setItem(
-        "token",
-        response.data.token
+      const data = await response.json();
+
+      alert(
+        JSON.stringify(data, null, 2)
       );
 
-      toast.success("Login Successful");
+      if (response.ok) {
 
-      navigate("/dashboard");
+        localStorage.setItem(
+          "token",
+          data.token
+        );
+
+        toast.success("Login Successful");
+
+        navigate("/dashboard");
+      }
 
     } catch (error) {
 
-  alert(
-    JSON.stringify(
-      {
-        message: error.message,
-        code: error.code,
-        status: error.response?.status,
-        data: error.response?.data
-      },
-      null,
-      2
-    )
-  );
+      alert(
+        "FETCH ERROR:\n" +
+        error.message
+      );
 
-}
+      console.log(error);
+    }
   };
 
   return (
@@ -63,7 +70,7 @@ function Login() {
 
       <div className="auth-card">
 
-        <h1>URL Shortener DEBUG</h1>
+        <h1>URL Shortener FETCH TEST</h1>
 
         <p className="subtitle">
           Login to manage your links
@@ -75,6 +82,7 @@ function Login() {
             type="email"
             name="email"
             placeholder="Email Address"
+            value={formData.email}
             onChange={handleChange}
             required
           />
@@ -83,6 +91,7 @@ function Login() {
             type="password"
             name="password"
             placeholder="Password"
+            value={formData.password}
             onChange={handleChange}
             required
           />
