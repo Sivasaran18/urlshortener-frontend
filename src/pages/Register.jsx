@@ -1,6 +1,5 @@
 import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
-import API from "../services/api";
 import "./Auth.css";
 import toast from "react-hot-toast";
 
@@ -30,12 +29,24 @@ function Register() {
 
     try {
 
-      const response = await API.post(
-        "/auth/register",
-        formData
+      const response = await fetch(
+        "https://urlshortener-backend-op87.onrender.com/api/auth/register",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify(formData)
+        }
       );
 
-      toast.success(response.data.message);
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.message);
+      }
+
+      toast.success(data.message);
 
       setTimeout(() => {
         navigate("/");
@@ -43,9 +54,9 @@ function Register() {
 
     } catch (error) {
 
-      toast.error(
-        error.response?.data?.message ||
-        "Registration Failed"
+      alert(
+        "REGISTER ERROR:\n" +
+        error.message
       );
 
     }

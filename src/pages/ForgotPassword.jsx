@@ -1,5 +1,4 @@
 import { useState } from "react";
-import API from "../services/api";
 import "./Auth.css";
 import toast from "react-hot-toast";
 
@@ -14,20 +13,36 @@ function ForgotPassword() {
 
     try {
 
-      const response = await API.post(
-        "/auth/forgot-password",
-        { email }
+      const response = await fetch(
+        "https://urlshortener-backend-op87.onrender.com/api/auth/forgot-password",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({
+            email
+          })
+        }
       );
 
-      setSuccess(response.data.message);
+      const data = await response.json();
 
-      toast.success("Reset link sent successfully");
+      if (!response.ok) {
+        throw new Error(data.message);
+      }
+
+      setSuccess(data.message);
+
+      toast.success(
+        "Reset link sent successfully"
+      );
 
     } catch (error) {
 
-      toast.error(
-        error.response?.data?.message ||
-        "Something went wrong"
+      alert(
+        "FORGOT PASSWORD ERROR:\n" +
+        error.message
       );
 
     }
