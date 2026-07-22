@@ -70,7 +70,7 @@ function Login() {
 
       <div className="auth-card">
 
-        <h1>URL Shortener FETCH TEST</h1>
+        <h1>URL Shortener</h1>
 
         <p className="subtitle">
           Login to manage your links
